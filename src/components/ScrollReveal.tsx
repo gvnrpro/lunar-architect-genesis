@@ -11,6 +11,10 @@ interface ScrollRevealProps {
   threshold?: number;
   once?: boolean;
   stagger?: boolean;
+  cascade?: boolean;
+  cascadeDelay?: number;
+  fadeOnly?: boolean;
+  classNames?: string;
 }
 
 const ScrollReveal = ({
@@ -22,7 +26,11 @@ const ScrollReveal = ({
   easing = 'cubic-bezier(0.5, 0, 0, 1)',
   threshold = 0.1,
   once = true,
-  stagger = false
+  stagger = false,
+  cascade = false,
+  cascadeDelay = 100,
+  fadeOnly = false,
+  classNames = ''
 }: ScrollRevealProps) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -35,10 +43,13 @@ const ScrollReveal = ({
     // Set initial styles based on direction
     const initialStyles: Record<string, string> = {
       opacity: '0',
-      transform: `translate${direction === 'up' || direction === 'down' ? 'Y' : 'X'}(${direction === 'down' || direction === 'right' ? distance : -distance}px)`,
-      transition: `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`,
+      transition: `opacity ${duration}ms ${easing}${fadeOnly ? '' : `, transform ${duration}ms ${easing}`}`,
       transitionDelay: `${delay}ms`,
     };
+    
+    if (!fadeOnly) {
+      initialStyles.transform = `translate${direction === 'up' || direction === 'down' ? 'Y' : 'X'}(${direction === 'down' || direction === 'right' ? distance : -distance}px)`;
+    }
     
     Object.assign(element.style, initialStyles);
     
@@ -49,26 +60,38 @@ const ScrollReveal = ({
             // Apply revealed styles
             const revealedStyles = {
               opacity: '1',
-              transform: 'translate(0, 0)',
+              transform: fadeOnly ? undefined : 'translate(0, 0)',
             };
             
             setTimeout(() => {
               Object.assign(element.style, revealedStyles);
               setIsRevealed(true);
               
-              // Handle staggered children animation
-              if (stagger) {
+              // Handle staggered or cascading children animation
+              if (stagger || cascade) {
                 const children = Array.from(element.children);
                 children.forEach((child, index) => {
                   const childEl = child as HTMLElement;
                   childEl.style.opacity = '0';
-                  childEl.style.transform = `translate${direction === 'up' || direction === 'down' ? 'Y' : 'X'}(${direction === 'down' || direction === 'right' ? distance/2 : -distance/2}px)`;
-                  childEl.style.transition = `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`;
-                  childEl.style.transitionDelay = `${delay + (index * 100)}ms`;
+                  
+                  if (!fadeOnly) {
+                    childEl.style.transform = `translate${direction === 'up' || direction === 'down' ? 'Y' : 'X'}(${direction === 'down' || direction === 'right' ? distance/2 : -distance/2}px)`;
+                  }
+                  
+                  childEl.style.transition = `opacity ${duration}ms ${easing}${fadeOnly ? '' : `, transform ${duration}ms ${easing}`}`;
+                  
+                  // Different delay calculation for stagger vs cascade
+                  const itemDelay = cascade 
+                    ? delay + (index * cascadeDelay) 
+                    : delay + (index * 100);
+                    
+                  childEl.style.transitionDelay = `${itemDelay}ms`;
                   
                   setTimeout(() => {
                     childEl.style.opacity = '1';
-                    childEl.style.transform = 'translate(0, 0)';
+                    if (!fadeOnly) {
+                      childEl.style.transform = 'translate(0, 0)';
+                    }
                   }, 50);
                 });
               }
@@ -93,10 +116,10 @@ const ScrollReveal = ({
         observer.unobserve(element);
       }
     };
-  }, [delay, direction, distance, duration, easing, once, threshold, isRevealed, stagger]);
+  }, [delay, direction, distance, duration, easing, once, threshold, isRevealed, stagger, cascade, cascadeDelay, fadeOnly]);
   
   return (
-    <div ref={elementRef} className="reveal-element">
+    <div ref={elementRef} className={`reveal-element ${classNames}`}>
       {children}
     </div>
   );
