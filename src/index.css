@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -38,60 +39,43 @@
   :root {
     --background: 220 33% 98%;
     --foreground: 222 47% 10%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 210 90% 15%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 217 10% 90%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 90% 30%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
     --radius: 0.5rem;
   }
 
   .dark {
     --background: 222 47% 10%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 210 90% 50%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -104,12 +88,15 @@
   }
 
   body {
-    @apply bg-background text-foreground font-montreal;
+    @apply bg-background text-foreground;
+    font-family: 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-monument font-bold tracking-tight;
+    font-family: 'Monument Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 }
 
@@ -119,159 +106,52 @@
   }
 
   .blueprint-grid {
-    background-size: 50px 50px;
+    background-size: 40px 40px;
     background-image:
-      linear-gradient(to right, rgba(15, 52, 96, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(15, 52, 96, 0.05) 1px, transparent 1px);
-    transition: background-size 1s ease-out;
-  }
-
-  .grid-overlay {
-    background-size: 20px 20px;
-    background-image:
-      radial-gradient(circle, rgba(15, 52, 96, 0.1) 1px, transparent 1px);
-    opacity: 0.5;
+      linear-gradient(to right, rgba(15, 52, 96, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 52, 96, 0.1) 1px, transparent 1px);
   }
 
   .section-padding {
-    @apply py-24 md:py-32;
+    @apply py-20 md:py-32;
   }
   
   .reveal-on-scroll {
-    @apply opacity-0 translate-y-8 transition-all duration-700;
+    @apply opacity-100 translate-y-0 transition-all duration-700;
   }
   
   .reveal-on-scroll.revealed {
     @apply opacity-100 translate-y-0;
   }
 
-  /* Lunar phase animation */
+  /* Lunar phase background */
   .lunar-phases-bg {
     position: absolute;
     top: 0;
     right: 0;
-    width: 600px;
-    height: 600px;
+    width: 500px;
+    height: 500px;
     border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(0,153,255,0.02) 0%, transparent 70%);
-    opacity: 0.1;
+    background: radial-gradient(circle at center, rgba(0,153,255,0.03) 0%, transparent 70%);
+    opacity: 0.3;
     transform: translate(50%, -50%);
-    filter: blur(60px);
-    animation: pulse-slow 15s infinite alternate ease-in-out;
+    filter: blur(40px);
+    animation: pulse-slow 20s infinite alternate ease-in-out;
   }
 
-  /* Particle system styling */
+  /* Simplified particle system */
   .particle {
     position: absolute;
-    background-color: rgba(0, 153, 255, 0.3);
+    background-color: rgba(0, 153, 255, 0.4);
     border-radius: 50%;
     pointer-events: none;
     opacity: 0;
-    animation: float-particle infinite ease-in-out both;
+    animation: float-particle 12s infinite ease-in-out both;
   }
 
-  /* Lunar surface transition */
-  .lunar-surface-transition {
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 Q 25 0 50 15 Q 75 5 100 20' fill='none' stroke='rgba(0,153,255,0.1)' stroke-width='1'/%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-    background-size: 100px 20px;
-    opacity: 0.5;
-  }
-
-  /* Animated lines for text */
-  .reveal-line {
-    @apply transition-all duration-700;
-  }
-
-  .reveal-line.revealed-line {
-    @apply opacity-100 translate-y-0;
-  }
-
-  /* Custom animations */
-  @keyframes lunar-phase {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
-      box-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    }
-    50% {
-      opacity: 0.5;
-      transform: scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-    }
-  }
-
-  @keyframes draw-line {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  @keyframes float-particle {
-    0% {
-      transform: translateY(0) translateX(0);
-      opacity: 0;
-    }
-    20% {
-      opacity: 0.3;
-    }
-    80% {
-      opacity: 0.3;
-    }
-    100% {
-      transform: translateY(-100px) translateX(20px);
-      opacity: 0;
-    }
-  }
-
-  @keyframes pulse-slow {
-    0% {
-      transform: translate(50%, -50%) scale(0.8);
-      opacity: 0.05;
-    }
-    100% {
-      transform: translate(50%, -50%) scale(1.2);
-      opacity: 0.15;
-    }
-  }
-
-  /* Animate text on scroll */
-  .animate-on-scroll .line {
-    transform: translateX(-30px);
-    opacity: 0;
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-    transition-delay: calc(var(--line-index, 0) * 0.1s);
-  }
-
-  /* Logo hover interactions */
-  .logo-container:hover .lunar-circle {
-    filter: drop-shadow(0 0 8px rgba(0, 153, 255, 0.6));
-    transition: all 0.5s ease-out;
-  }
-
-  /* Enhanced Moonscape Animations */
   .stellar-dust {
-    background: radial-gradient(circle, rgba(0,153,255,0.4) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: stellar-drift infinite ease-in-out both;
-  }
-
-  .cosmic-ray {
-    background: linear-gradient(45deg, rgba(0,153,255,0.6), rgba(255,255,255,0.3));
-    border-radius: 2px;
-    width: 1px !important;
-    height: 20px !important;
-    animation: cosmic-streak infinite linear both;
-  }
-
-  .lunar-fragment {
-    background: rgba(230,230,230,0.3);
-    border-radius: 30% 70% 40% 60%;
-    animation: fragment-tumble infinite ease-in-out both;
+    background: radial-gradient(circle, rgba(0,153,255,0.3) 0%, transparent 70%);
+    animation: stellar-drift 15s infinite ease-in-out both;
   }
 
   .cosmic-dust-layer {
@@ -282,100 +162,27 @@
     height: 100%;
     background: 
       radial-gradient(2px 2px at 20px 30px, rgba(0,153,255,0.1), transparent),
-      radial-gradient(2px 2px at 40px 70px, rgba(230,230,230,0.1), transparent),
-      radial-gradient(1px 1px at 90px 40px, rgba(0,153,255,0.1), transparent),
-      radial-gradient(1px 1px at 130px 80px, rgba(230,230,230,0.1), transparent);
+      radial-gradient(1px 1px at 90px 40px, rgba(230,230,230,0.1), transparent);
     background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: cosmic-drift 60s linear infinite;
+    background-size: 150px 150px;
+    animation: cosmic-drift 40s linear infinite;
+    opacity: 0.5;
   }
 
-  .moonscape-transition {
-    position: relative;
-  }
-
-  .moonscape-transition::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0,153,255,0.2), transparent);
-    animation: moonbeam-sweep 1s ease-out forwards;
-    pointer-events: none;
-  }
-
-  .moonlight-beam {
-    animation: moonlight-pulse 8s ease-in-out infinite;
-  }
-
-  /* Orbital animations for floating elements */
-  .animate-orbital {
-    animation: orbital-motion 20s linear infinite;
-  }
-
-  .animate-orbital-reverse {
-    animation: orbital-motion-reverse 25s linear infinite;
-  }
-
-  /* Enhanced logo animations */
-  .lunar-pulse {
-    animation: lunar-pulse 4s ease-in-out infinite;
-  }
-
-  .orbital-particles .particle {
-    animation: orbital-float infinite ease-in-out both;
-  }
-
-  /* Custom keyframes for enhanced animations */
+  /* Animations */
   @keyframes stellar-drift {
     0% {
       transform: translateY(100vh) translateX(0) scale(0);
       opacity: 0;
     }
     10% {
-      opacity: 0.3;
-    }
-    90% {
-      opacity: 0.3;
-    }
-    100% {
-      transform: translateY(-20vh) translateX(50px) scale(1);
-      opacity: 0;
-    }
-  }
-
-  @keyframes cosmic-streak {
-    0% {
-      transform: translateY(100vh) translateX(-20px) rotate(45deg);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.8;
-    }
-    90% {
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(-20vh) translateX(20px) rotate(45deg);
-      opacity: 0;
-    }
-  }
-
-  @keyframes fragment-tumble {
-    0% {
-      transform: translateY(100vh) rotate(0deg);
-      opacity: 0;
-    }
-    10% {
       opacity: 0.4;
     }
     90% {
       opacity: 0.4;
     }
     100% {
-      transform: translateY(-20vh) rotate(360deg);
+      transform: translateY(-10vh) translateX(30px) scale(1);
       opacity: 0;
     }
   }
@@ -385,78 +192,79 @@
       transform: translateX(0);
     }
     100% {
-      transform: translateX(-200px);
+      transform: translateX(-150px);
     }
   }
 
-  @keyframes moonbeam-sweep {
+  @keyframes pulse-slow {
     0% {
-      left: -100%;
+      transform: translate(50%, -50%) scale(0.8);
+      opacity: 0.1;
     }
     100% {
-      left: 100%;
+      transform: translate(50%, -50%) scale(1.2);
+      opacity: 0.3;
     }
   }
 
-  @keyframes moonlight-pulse {
-    0%, 100% {
-      opacity: 0.1;
-      filter: blur(2px);
+  @keyframes float-particle {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0;
     }
-    50% {
-      opacity: 0.3;
-      filter: blur(1px);
+    20% {
+      opacity: 0.4;
+    }
+    80% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateY(-80px) translateX(15px);
+      opacity: 0;
     }
   }
 
   @keyframes orbital-motion {
     0% {
-      transform: rotate(0deg) translateX(100px) rotate(0deg);
+      transform: rotate(0deg) translateX(80px) rotate(0deg);
     }
     100% {
-      transform: rotate(360deg) translateX(100px) rotate(-360deg);
+      transform: rotate(360deg) translateX(80px) rotate(-360deg);
     }
   }
 
   @keyframes orbital-motion-reverse {
     0% {
-      transform: rotate(0deg) translateX(80px) rotate(0deg);
+      transform: rotate(0deg) translateX(60px) rotate(0deg);
     }
     100% {
-      transform: rotate(-360deg) translateX(80px) rotate(360deg);
+      transform: rotate(-360deg) translateX(60px) rotate(360deg);
     }
   }
 
-  @keyframes lunar-pulse {
+  .animate-orbital {
+    animation: orbital-motion 25s linear infinite;
+  }
+
+  .animate-orbital-reverse {
+    animation: orbital-motion-reverse 30s linear infinite;
+  }
+
+  .moonlight-beam {
+    animation: moonlight-pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes moonlight-pulse {
     0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 0 20px rgba(0,153,255,0.2);
+      opacity: 0.1;
     }
     50% {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(0,153,255,0.4);
-    }
-  }
-
-  @keyframes orbital-float {
-    0% {
-      transform: translateY(0) translateX(0) rotate(0deg);
-      opacity: 0;
-    }
-    20% {
       opacity: 0.3;
-    }
-    80% {
-      opacity: 0.3;
-    }
-    100% {
-      transform: translateY(-150px) translateX(30px) rotate(180deg);
-      opacity: 0;
     }
   }
 }
 
-/* Hide default cursor on desktop for custom cursor */
+/* Custom cursor for desktop */
 @media (min-width: 768px) {
   body {
     cursor: none;
@@ -467,14 +275,18 @@
   }
 }
 
-/* Additional Animations */
+/* Basic animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite;
 }
 
 @keyframes fade-up {
@@ -490,22 +302,22 @@
 
 .animate-fade-up {
   opacity: 0;
-  animation: fade-up 0.7s ease-out forwards;
+  animation: fade-up 0.6s ease-out forwards;
 }
 
 .animate-fade-up-delay-1 {
   opacity: 0;
-  animation: fade-up 0.7s ease-out 0.3s forwards;
+  animation: fade-up 0.6s ease-out 0.2s forwards;
 }
 
 .animate-fade-up-delay-2 {
   opacity: 0;
-  animation: fade-up 0.7s ease-out 0.6s forwards;
+  animation: fade-up 0.6s ease-out 0.4s forwards;
 }
 
 .animate-fade-up-delay-3 {
   opacity: 0;
-  animation: fade-up 0.7s ease-out 0.9s forwards;
+  animation: fade-up 0.6s ease-out 0.6s forwards;
 }
 
 @keyframes fade-in {
@@ -515,5 +327,5 @@
 
 .animate-fade-in-slow {
   opacity: 0;
-  animation: fade-in 1.2s ease-out forwards;
+  animation: fade-in 1s ease-out forwards;
 }

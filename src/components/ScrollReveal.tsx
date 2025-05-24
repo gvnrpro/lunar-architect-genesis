@@ -7,13 +7,8 @@ interface ScrollRevealProps {
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   distance?: number;
   duration?: number;
-  easing?: string;
   threshold?: number;
   once?: boolean;
-  stagger?: boolean;
-  cascade?: boolean;
-  cascadeDelay?: number;
-  fadeOnly?: boolean;
   classNames?: string;
 }
 
@@ -21,80 +16,55 @@ const ScrollReveal = ({
   children,
   delay = 0,
   direction = 'up',
-  distance = 50,
-  duration = 700,
-  easing = 'cubic-bezier(0.5, 0, 0, 1)',
+  distance = 30,
+  duration = 600,
   threshold = 0.1,
   once = true,
-  stagger = false,
-  cascade = false,
-  cascadeDelay = 100,
-  fadeOnly = false,
   classNames = ''
 }: ScrollRevealProps) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const [isRevealed, setIsRevealed] = useState(false);
+  const [timeoutFallback, setTimeoutFallback] = useState(false);
   
   useEffect(() => {
     const element = elementRef.current;
-    
     if (!element) return;
     
-    // Set initial styles based on direction
-    const initialStyles: Record<string, string> = {
-      opacity: '0',
-      transition: `opacity ${duration}ms ${easing}${fadeOnly ? '' : `, transform ${duration}ms ${easing}`}`,
-      transitionDelay: `${delay}ms`,
+    // Fallback timeout to ensure content shows after 2 seconds
+    const fallbackTimer = setTimeout(() => {
+      console.log('ScrollReveal fallback triggered for element');
+      setTimeoutFallback(true);
+      setIsRevealed(true);
+    }, 2000);
+    
+    // Set initial styles
+    const getTransform = () => {
+      if (direction === 'none') return 'none';
+      const axis = direction === 'up' || direction === 'down' ? 'Y' : 'X';
+      const value = direction === 'down' || direction === 'right' ? distance : -distance;
+      return `translate${axis}(${value}px)`;
     };
     
-    if (!fadeOnly) {
-      initialStyles.transform = `translate${direction === 'up' || direction === 'down' ? 'Y' : 'X'}(${direction === 'down' || direction === 'right' ? distance : -distance}px)`;
-    }
-    
-    Object.assign(element.style, initialStyles);
+    Object.assign(element.style, {
+      opacity: '0',
+      transform: getTransform(),
+      transition: `opacity ${duration}ms ease-out, transform ${duration}ms ease-out`,
+      transitionDelay: `${delay}ms`,
+    });
     
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && (!once || !isRevealed)) {
-            // Apply revealed styles
-            const revealedStyles = {
-              opacity: '1',
-              transform: fadeOnly ? undefined : 'translate(0, 0)',
-            };
+            clearTimeout(fallbackTimer);
+            console.log('ScrollReveal intersection triggered');
             
             setTimeout(() => {
-              Object.assign(element.style, revealedStyles);
+              Object.assign(element.style, {
+                opacity: '1',
+                transform: 'translate(0, 0)',
+              });
               setIsRevealed(true);
-              
-              // Handle staggered or cascading children animation
-              if (stagger || cascade) {
-                const children = Array.from(element.children);
-                children.forEach((child, index) => {
-                  const childEl = child as HTMLElement;
-                  childEl.style.opacity = '0';
-                  
-                  if (!fadeOnly) {
-                    childEl.style.transform = `translate${direction === 'up' || direction === 'down' ? 'Y' : 'X'}(${direction === 'down' || direction === 'right' ? distance/2 : -distance/2}px)`;
-                  }
-                  
-                  childEl.style.transition = `opacity ${duration}ms ${easing}${fadeOnly ? '' : `, transform ${duration}ms ${easing}`}`;
-                  
-                  // Different delay calculation for stagger vs cascade
-                  const itemDelay = cascade 
-                    ? delay + (index * cascadeDelay) 
-                    : delay + (index * 100);
-                    
-                  childEl.style.transitionDelay = `${itemDelay}ms`;
-                  
-                  setTimeout(() => {
-                    childEl.style.opacity = '1';
-                    if (!fadeOnly) {
-                      childEl.style.transform = 'translate(0, 0)';
-                    }
-                  }, 50);
-                });
-              }
             }, 50);
             
             if (once) {
@@ -105,21 +75,30 @@ const ScrollReveal = ({
       },
       {
         threshold: threshold,
-        rootMargin: '0px 0px -50px 0px',
+        rootMargin: '0px 0px -20px 0px',
       }
     );
     
     observer.observe(element);
     
     return () => {
-      if (element) {
-        observer.unobserve(element);
-      }
+      clearTimeout(fallbackTimer);
+      observer.unobserve(element);
     };
-  }, [delay, direction, distance, duration, easing, once, threshold, isRevealed, stagger, cascade, cascadeDelay, fadeOnly]);
+  }, [delay, direction, distance, duration, threshold, once, isRevealed]);
+  
+  // Force show content if timeout fallback triggered
+  useEffect(() => {
+    if (timeoutFallback && elementRef.current) {
+      Object.assign(elementRef.current.style, {
+        opacity: '1',
+        transform: 'translate(0, 0)',
+      });
+    }
+  }, [timeoutFallback]);
   
   return (
-    <div ref={elementRef} className={`reveal-element ${classNames}`}>
+    <div ref={elementRef} className={`scroll-reveal-element ${classNames}`}>
       {children}
     </div>
   );
