@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from 'react';
 
 const LogoAnimation = () => {
@@ -15,58 +14,81 @@ const LogoAnimation = () => {
         path.style.strokeDasharray = '1000';
         path.style.strokeDashoffset = '1000';
         path.style.fill = 'transparent';
+        path.style.stroke = '#16213E';
       });
       
       if (circle) {
         circle.style.opacity = '0';
         circle.style.transform = 'scale(0.8)';
+        circle.style.fill = '#16213E';
       }
       
-      // Animate paths
+      // Animate paths with preserved styling
       paths.forEach((path, index) => {
         setTimeout(() => {
           path.style.animation = 'draw-line 2s ease-out forwards';
           
-          // Fill after drawing
-          setTimeout(() => {
-            path.style.fill = '#16213E';
-          }, 1800);
+          // Keep paths as strokes only (no fill for M letters)
+          if (index === 0) {
+            // Hexagon outline - keep as stroke only
+            setTimeout(() => {
+              path.style.stroke = '#16213E';
+              path.style.fill = 'transparent';
+            }, 1800);
+          } else {
+            // M letter paths - keep as strokes
+            setTimeout(() => {
+              path.style.stroke = '#16213E';
+              path.style.fill = 'transparent';
+              path.style.strokeWidth = '20';
+            }, 1800);
+          }
         }, index * 300);
       });
       
-      // Animate circle with lunar phases effect
+      // Animate circle (moon) with lunar phases effect
       if (circle) {
         setTimeout(() => {
           circle.style.animation = 'lunar-phase 2.5s ease-out forwards';
+          // Add subtle pulsing animation after initial animation
+          setTimeout(() => {
+            circle.style.animation = 'lunar-pulse 4s ease-in-out infinite';
+          }, 2500);
         }, 1500);
       }
 
-      // Add hover animation for the container
+      // Enhanced hover animations
       const container = containerRef.current;
       if (container) {
         container.addEventListener('mouseenter', () => {
-          // Scale the circle slightly on hover
           if (circle) {
             circle.style.transform = 'scale(1.1)';
             circle.style.transition = 'transform 0.5s ease-out';
+            circle.style.filter = 'drop-shadow(0 0 8px rgba(0, 153, 255, 0.6))';
           }
           
-          // Slightly rotate the paths for an interactive feel
-          paths.forEach((path) => {
-            path.style.transition = 'transform 0.5s ease-out';
+          paths.forEach((path, index) => {
+            path.style.transition = 'all 0.5s ease-out';
             path.style.transformOrigin = 'center';
-            path.style.transform = 'rotate(2deg)';
+            if (index === 0) {
+              // Hexagon - subtle rotation
+              path.style.transform = 'rotate(2deg)';
+            } else {
+              // M letters - slight glow effect
+              path.style.filter = 'drop-shadow(0 0 4px rgba(22, 33, 62, 0.3))';
+            }
           });
         });
         
         container.addEventListener('mouseleave', () => {
-          // Reset the animations on mouse leave
           if (circle) {
             circle.style.transform = 'scale(1)';
+            circle.style.filter = 'none';
           }
           
           paths.forEach((path) => {
             path.style.transform = 'rotate(0deg)';
+            path.style.filter = 'none';
           });
         });
       }
@@ -140,9 +162,14 @@ const LogoAnimation = () => {
         />
       </svg>
       
-      {/* Particle system for enhanced logo effect */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div className="particles-container"></div>
+      {/* Enhanced particle system */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+        <div className="particles-container orbital-particles"></div>
+      </div>
+      
+      {/* Moonlight beam effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="moonlight-beam"></div>
       </div>
     </div>
   );

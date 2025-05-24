@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -252,6 +251,219 @@
   .logo-container:hover .lunar-circle {
     filter: drop-shadow(0 0 8px rgba(0, 153, 255, 0.6));
     transition: all 0.5s ease-out;
+  }
+
+  /* Enhanced Moonscape Animations */
+  .stellar-dust {
+    background: radial-gradient(circle, rgba(0,153,255,0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: stellar-drift infinite ease-in-out both;
+  }
+
+  .cosmic-ray {
+    background: linear-gradient(45deg, rgba(0,153,255,0.6), rgba(255,255,255,0.3));
+    border-radius: 2px;
+    width: 1px !important;
+    height: 20px !important;
+    animation: cosmic-streak infinite linear both;
+  }
+
+  .lunar-fragment {
+    background: rgba(230,230,230,0.3);
+    border-radius: 30% 70% 40% 60%;
+    animation: fragment-tumble infinite ease-in-out both;
+  }
+
+  .cosmic-dust-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(2px 2px at 20px 30px, rgba(0,153,255,0.1), transparent),
+      radial-gradient(2px 2px at 40px 70px, rgba(230,230,230,0.1), transparent),
+      radial-gradient(1px 1px at 90px 40px, rgba(0,153,255,0.1), transparent),
+      radial-gradient(1px 1px at 130px 80px, rgba(230,230,230,0.1), transparent);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: cosmic-drift 60s linear infinite;
+  }
+
+  .moonscape-transition {
+    position: relative;
+  }
+
+  .moonscape-transition::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,153,255,0.2), transparent);
+    animation: moonbeam-sweep 1s ease-out forwards;
+    pointer-events: none;
+  }
+
+  .moonlight-beam {
+    animation: moonlight-pulse 8s ease-in-out infinite;
+  }
+
+  /* Orbital animations for floating elements */
+  .animate-orbital {
+    animation: orbital-motion 20s linear infinite;
+  }
+
+  .animate-orbital-reverse {
+    animation: orbital-motion-reverse 25s linear infinite;
+  }
+
+  /* Enhanced logo animations */
+  .lunar-pulse {
+    animation: lunar-pulse 4s ease-in-out infinite;
+  }
+
+  .orbital-particles .particle {
+    animation: orbital-float infinite ease-in-out both;
+  }
+
+  /* Custom keyframes for enhanced animations */
+  @keyframes stellar-drift {
+    0% {
+      transform: translateY(100vh) translateX(0) scale(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.3;
+    }
+    90% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translateY(-20vh) translateX(50px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cosmic-streak {
+    0% {
+      transform: translateY(100vh) translateX(-20px) rotate(45deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.8;
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-20vh) translateX(20px) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes fragment-tumble {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.4;
+    }
+    90% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateY(-20vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cosmic-drift {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-200px);
+    }
+  }
+
+  @keyframes moonbeam-sweep {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+
+  @keyframes moonlight-pulse {
+    0%, 100% {
+      opacity: 0.1;
+      filter: blur(2px);
+    }
+    50% {
+      opacity: 0.3;
+      filter: blur(1px);
+    }
+  }
+
+  @keyframes orbital-motion {
+    0% {
+      transform: rotate(0deg) translateX(100px) rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg) translateX(100px) rotate(-360deg);
+    }
+  }
+
+  @keyframes orbital-motion-reverse {
+    0% {
+      transform: rotate(0deg) translateX(80px) rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg) translateX(80px) rotate(360deg);
+    }
+  }
+
+  @keyframes lunar-pulse {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 20px rgba(0,153,255,0.2);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0,153,255,0.4);
+    }
+  }
+
+  @keyframes orbital-float {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.3;
+    }
+    80% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translateY(-150px) translateX(30px) rotate(180deg);
+      opacity: 0;
+    }
+  }
+}
+
+/* Hide default cursor on desktop for custom cursor */
+@media (min-width: 768px) {
+  body {
+    cursor: none;
+  }
+  
+  a, button, [role="button"] {
+    cursor: none;
   }
 }
 

@@ -8,57 +8,62 @@ import Projects from '@/components/Projects';
 import Clients from '@/components/Clients';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import LunarNavigation from '@/components/LunarNavigation';
+import MoonlightCursor from '@/components/MoonlightCursor';
 
 const Index = () => {
   const particlesTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Initialize particle system for all screens using requestAnimationFrame for better performance
-    const createParticles = () => {
+    // Enhanced particle system for moonscape theme
+    const createEnhancedParticles = () => {
       const containers = document.querySelectorAll('.particles-container');
       
       containers.forEach(container => {
-        // Clear existing particles first to avoid duplication
         container.innerHTML = '';
         
-        // Create fewer particles for better performance
-        const particleCount = window.innerWidth < 768 ? 10 : 20;
+        const particleCount = window.innerWidth < 768 ? 15 : 30;
         
         for (let i = 0; i < particleCount; i++) {
           const particle = document.createElement('div');
-          particle.classList.add('particle');
           
-          // Random position
+          // Different particle types for variety
+          const particleType = Math.random();
+          if (particleType < 0.7) {
+            particle.classList.add('particle', 'stellar-dust');
+          } else if (particleType < 0.9) {
+            particle.classList.add('particle', 'cosmic-ray');
+          } else {
+            particle.classList.add('particle', 'lunar-fragment');
+          }
+          
           particle.style.left = `${Math.random() * 100}%`;
           particle.style.top = `${Math.random() * 100}%`;
           
-          // Random size with more variation
-          const size = Math.random() * 3 + 1;
+          const size = Math.random() * 4 + 1;
           particle.style.width = `${size}px`;
           particle.style.height = `${size}px`;
           
-          // Random animation duration
-          particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+          particle.style.animationDuration = `${Math.random() * 15 + 8}s`;
+          particle.style.animationDelay = `${Math.random() * 8}s`;
           
-          // Random animation delay
-          particle.style.animationDelay = `${Math.random() * 5}s`;
-          
-          // Add to container
           container.appendChild(particle);
         }
       });
     };
-    
-    // Handle scroll animations with improved performance using requestAnimationFrame
-    const handleScroll = () => {
-      // Use cancelAnimationFrame to prevent multiple animations queuing up
+
+    // Enhanced scroll handler with moonscape effects
+    const handleEnhancedScroll = () => {
       if (particlesTimerRef.current) {
         cancelAnimationFrame(particlesTimerRef.current);
       }
       
       particlesTimerRef.current = requestAnimationFrame(() => {
-        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+        const scrollY = window.scrollY;
+        const scrollPercent = scrollY / (document.body.scrollHeight - window.innerHeight);
         
+        // Reveal elements with enhanced effects
+        const revealElements = document.querySelectorAll('.reveal-on-scroll');
         revealElements.forEach((element) => {
           const elementTop = element.getBoundingClientRect().top;
           const elementBottom = element.getBoundingClientRect().bottom;
@@ -68,91 +73,87 @@ const Index = () => {
           }
         });
         
-        // Parallax effect for backgrounds with better performance
-        const parallaxBackgrounds = document.querySelectorAll('.parallax-bg');
-        parallaxBackgrounds.forEach((bg) => {
-          const scrollPosition = window.scrollY;
+        // Enhanced parallax with lunar surface feel
+        const parallaxElements = document.querySelectorAll('.parallax-bg');
+        parallaxElements.forEach((bg) => {
           const element = bg as HTMLElement;
-          const speed = parseFloat(element.dataset.speed || '0.2');
-          element.style.transform = `translateY(${scrollPosition * speed}px)`;
+          const speed = parseFloat(element.dataset.speed || '0.3');
+          const yPos = scrollY * speed;
+          element.style.transform = `translateY(${yPos}px) scale(${1 + scrollPercent * 0.1})`;
         });
         
-        // Animate text lines on scroll
-        const textLines = document.querySelectorAll('.animate-on-scroll .line');
-        textLines.forEach((line, index) => {
-          const lineTop = line.getBoundingClientRect().top;
-          if (lineTop < window.innerHeight * 0.8) {
-            (line as HTMLElement).style.transform = 'translateX(0)';
-            (line as HTMLElement).style.opacity = '1';
-          }
-        });
-        
-        // Animate architectural grid
-        const grid = document.querySelector('.blueprint-grid');
-        if (grid) {
-          const scrollPercentage = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-          (grid as HTMLElement).style.backgroundSize = `${50 + (scrollPercentage * 20)}px ${50 + (scrollPercentage * 20)}px`;
+        // Lunar phase transition based on scroll
+        const lunarBg = document.querySelector('.lunar-phases-bg') as HTMLElement;
+        if (lunarBg) {
+          const phase = Math.sin(scrollPercent * Math.PI * 2);
+          lunarBg.style.opacity = `${0.1 + Math.abs(phase) * 0.1}`;
+          lunarBg.style.transform = `translate(50%, -50%) scale(${0.8 + Math.abs(phase) * 0.4}) rotate(${scrollPercent * 360}deg)`;
         }
+        
+        // Dynamic blueprint grid
+        const grid = document.querySelector('.blueprint-grid') as HTMLElement;
+        if (grid) {
+          const gridSize = 50 + (scrollPercent * 30);
+          grid.style.backgroundSize = `${gridSize}px ${gridSize}px`;
+          grid.style.opacity = `${0.5 + scrollPercent * 0.3}`;
+        }
+        
+        // Moonlight beam effects
+        const moonbeams = document.querySelectorAll('.moonlight-beam');
+        moonbeams.forEach((beam, index) => {
+          const element = beam as HTMLElement;
+          const intensity = Math.sin(scrollPercent * Math.PI + index) * 0.5 + 0.5;
+          element.style.opacity = `${intensity * 0.2}`;
+        });
       });
     };
-    
-    // Add smooth scrolling behavior
+
+    // Enhanced smooth scrolling with easing
     const smoothScroll = (e: Event) => {
       const target = e.target as HTMLAnchorElement;
       
-      // Only process hash links within the same page
       if (target.tagName === 'A' && target.hash && target.origin + target.pathname === window.location.origin + window.location.pathname) {
         e.preventDefault();
         
         const targetElement = document.querySelector(target.hash);
         if (targetElement) {
+          // Add moonscape transition effect
+          targetElement.classList.add('moonscape-transition');
+          
           targetElement.scrollIntoView({ 
             behavior: 'smooth',
             block: 'start'
           });
           
-          // Update URL without reload
+          setTimeout(() => {
+            targetElement.classList.remove('moonscape-transition');
+          }, 1000);
+          
           history.pushState(null, '', target.hash);
         }
       }
     };
-    
-    // Check if URL has a hash on load and scroll to that section
-    const handleInitialHash = () => {
-      if (window.location.hash) {
-        setTimeout(() => {
-          const targetElement = document.querySelector(window.location.hash);
-          if (targetElement) {
-            targetElement.scrollIntoView({ 
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        }, 500); // Short delay to allow page to fully render
-      }
-    };
-    
-    // Start everything
-    createParticles();
-    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initialize enhanced effects
+    createEnhancedParticles();
+    window.addEventListener('scroll', handleEnhancedScroll, { passive: true });
     document.body.addEventListener('click', smoothScroll);
-    handleScroll(); // Check on initial load
-    handleInitialHash();
-    
-    // Set up resize handler with debounce
+    handleEnhancedScroll();
+
+    // Enhanced resize handler
     let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        createParticles();
-        handleScroll();
+        createEnhancedParticles();
+        handleEnhancedScroll();
       }, 250);
     };
-    
+
     window.addEventListener('resize', handleResize);
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleEnhancedScroll);
       document.body.removeEventListener('click', smoothScroll);
       window.removeEventListener('resize', handleResize);
       clearTimeout(resizeTimeout);
@@ -165,10 +166,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-moonscape-charcoal text-moonscape-charcoal dark:text-white overflow-x-hidden">
-      {/* Lunar phase animation in the background */}
+      {/* Enhanced lunar phase animation */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
         <div className="lunar-phases-bg"></div>
+        <div className="cosmic-dust-layer"></div>
       </div>
+      
+      {/* Enhanced cursor and navigation */}
+      <MoonlightCursor />
+      <LunarNavigation />
       
       <Navbar />
       <Hero />
@@ -179,12 +185,16 @@ const Index = () => {
       <Contact />
       <Footer />
       
-      {/* Floating design elements */}
-      <div className="fixed top-1/4 right-5 w-24 h-24 hexagon border border-moonscape-blue/10 opacity-10 animate-float z-0"></div>
-      <div className="fixed bottom-1/3 left-5 w-16 h-16 hexagon border border-moonscape-accent/10 opacity-10 animate-float z-0" style={{ animationDelay: '3s' }}></div>
+      {/* Enhanced floating design elements */}
+      <div className="fixed top-1/4 right-5 w-24 h-24 hexagon border border-moonscape-blue/10 opacity-10 animate-orbital z-0"></div>
+      <div className="fixed bottom-1/3 left-5 w-16 h-16 hexagon border border-moonscape-accent/10 opacity-10 animate-orbital-reverse z-0"></div>
       
-      {/* Blueprint grid overlay with reduced opacity for better performance */}
+      {/* Enhanced blueprint grid overlay */}
       <div className="fixed inset-0 pointer-events-none z-0 blueprint-grid opacity-3"></div>
+      
+      {/* Moonlight beam effects */}
+      <div className="fixed top-0 right-1/4 w-1 h-full bg-gradient-to-b from-moonscape-accent/5 to-transparent pointer-events-none z-0 moonlight-beam"></div>
+      <div className="fixed top-0 left-1/3 w-1 h-full bg-gradient-to-b from-moonscape-blue/5 to-transparent pointer-events-none z-0 moonlight-beam"></div>
     </div>
   );
 };
