@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { Building2, Home, Bridge, Leaf } from 'lucide-react';
+import { Building2, Home, Construction, Leaf } from 'lucide-react';
 
 const expertiseAreas = [
   {
@@ -25,7 +25,7 @@ const expertiseAreas = [
     id: 3,
     title: 'Infrastructure Projects',
     description: 'Roads, bridges, and public infrastructure that connects communities.',
-    icon: Bridge,
+    icon: Construction,
     projects: '25+',
     color: 'text-orange-600 dark:text-orange-400',
     bgColor: 'bg-orange-50 dark:bg-orange-900/20',
