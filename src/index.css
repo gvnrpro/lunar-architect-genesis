@@ -89,12 +89,13 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Monument Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Monument Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     font-weight: 700;
     letter-spacing: -0.025em;
   }
@@ -105,194 +106,68 @@
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   }
 
-  .blueprint-grid {
-    background-size: 40px 40px;
-    background-image:
-      linear-gradient(to right, rgba(15, 52, 96, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(15, 52, 96, 0.1) 1px, transparent 1px);
-  }
-
   .section-padding {
-    @apply py-20 md:py-32;
-  }
-  
-  .reveal-on-scroll {
-    @apply opacity-100 translate-y-0 transition-all duration-700;
-  }
-  
-  .reveal-on-scroll.revealed {
-    @apply opacity-100 translate-y-0;
+    @apply py-12 md:py-20 lg:py-24;
   }
 
-  /* Lunar phase background */
-  .lunar-phases-bg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle at center, rgba(0,153,255,0.03) 0%, transparent 70%);
-    opacity: 0.3;
-    transform: translate(50%, -50%);
-    filter: blur(40px);
-    animation: pulse-slow 20s infinite alternate ease-in-out;
+  /* Mobile-first responsive grid */
+  .mobile-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
   }
 
-  /* Simplified particle system */
-  .particle {
-    position: absolute;
-    background-color: rgba(0, 153, 255, 0.4);
-    border-radius: 50%;
-    pointer-events: none;
+  /* Touch-friendly buttons */
+  .touch-button {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Logo Animation Keyframes - FIXED */
+@keyframes draw-line {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes lunar-phase {
+  0% {
     opacity: 0;
-    animation: float-particle 12s infinite ease-in-out both;
+    transform: scale(0.8);
   }
-
-  .stellar-dust {
-    background: radial-gradient(circle, rgba(0,153,255,0.3) 0%, transparent 70%);
-    animation: stellar-drift 15s infinite ease-in-out both;
-  }
-
-  .cosmic-dust-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-      radial-gradient(2px 2px at 20px 30px, rgba(0,153,255,0.1), transparent),
-      radial-gradient(1px 1px at 90px 40px, rgba(230,230,230,0.1), transparent);
-    background-repeat: repeat;
-    background-size: 150px 150px;
-    animation: cosmic-drift 40s linear infinite;
-    opacity: 0.5;
-  }
-
-  /* Animations */
-  @keyframes stellar-drift {
-    0% {
-      transform: translateY(100vh) translateX(0) scale(0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.4;
-    }
-    90% {
-      opacity: 0.4;
-    }
-    100% {
-      transform: translateY(-10vh) translateX(30px) scale(1);
-      opacity: 0;
-    }
-  }
-
-  @keyframes cosmic-drift {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-150px);
-    }
-  }
-
-  @keyframes pulse-slow {
-    0% {
-      transform: translate(50%, -50%) scale(0.8);
-      opacity: 0.1;
-    }
-    100% {
-      transform: translate(50%, -50%) scale(1.2);
-      opacity: 0.3;
-    }
-  }
-
-  @keyframes float-particle {
-    0% {
-      transform: translateY(0) translateX(0);
-      opacity: 0;
-    }
-    20% {
-      opacity: 0.4;
-    }
-    80% {
-      opacity: 0.4;
-    }
-    100% {
-      transform: translateY(-80px) translateX(15px);
-      opacity: 0;
-    }
-  }
-
-  @keyframes orbital-motion {
-    0% {
-      transform: rotate(0deg) translateX(80px) rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg) translateX(80px) rotate(-360deg);
-    }
-  }
-
-  @keyframes orbital-motion-reverse {
-    0% {
-      transform: rotate(0deg) translateX(60px) rotate(0deg);
-    }
-    100% {
-      transform: rotate(-360deg) translateX(60px) rotate(360deg);
-    }
-  }
-
-  .animate-orbital {
-    animation: orbital-motion 25s linear infinite;
-  }
-
-  .animate-orbital-reverse {
-    animation: orbital-motion-reverse 30s linear infinite;
-  }
-
-  .moonlight-beam {
-    animation: moonlight-pulse 6s ease-in-out infinite;
-  }
-
-  @keyframes moonlight-pulse {
-    0%, 100% {
-      opacity: 0.1;
-    }
-    50% {
-      opacity: 0.3;
-    }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
-/* Custom cursor for desktop */
-@media (min-width: 768px) {
-  body {
-    cursor: none;
+@keyframes lunar-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  a, button, [role="button"] {
-    cursor: none;
-  }
-}
-
-/* Basic animations */
-@keyframes float {
-  0%, 100% { 
-    transform: translateY(0); 
-  }
-  50% { 
-    transform: translateY(-8px); 
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
   }
 }
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes fade-up {
+/* Mobile-optimized animations */
+@keyframes fade-up-mobile {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -300,32 +175,86 @@
   }
 }
 
-.animate-fade-up {
-  opacity: 0;
-  animation: fade-up 0.6s ease-out forwards;
+@keyframes float-gentle {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-4px); 
+  }
 }
 
-.animate-fade-up-delay-1 {
-  opacity: 0;
-  animation: fade-up 0.6s ease-out 0.2s forwards;
+/* Performance-optimized particles for mobile */
+@media (max-width: 768px) {
+  .particle {
+    display: none;
+  }
+  
+  .cosmic-dust-layer {
+    opacity: 0.2;
+    animation: none;
+  }
+  
+  .lunar-phases-bg {
+    width: 300px;
+    height: 300px;
+    filter: blur(20px);
+  }
 }
 
-.animate-fade-up-delay-2 {
+/* Utility animations */
+.animate-fade-up-mobile {
   opacity: 0;
-  animation: fade-up 0.6s ease-out 0.4s forwards;
+  animation: fade-up-mobile 0.6s ease-out forwards;
 }
 
-.animate-fade-up-delay-3 {
-  opacity: 0;
-  animation: fade-up 0.6s ease-out 0.6s forwards;
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
 }
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Modern card hover effects */
+.modern-card {
+  @apply bg-white dark:bg-moonscape-navy/40 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800;
 }
 
-.animate-fade-in-slow {
-  opacity: 0;
-  animation: fade-in 1s ease-out forwards;
+.modern-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Improved button styles */
+.modern-button {
+  @apply inline-flex items-center gap-2 px-6 py-3 bg-moonscape-navy text-white rounded-lg hover:bg-moonscape-blue transition-all duration-300 font-medium text-sm touch-button;
+}
+
+.modern-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 33, 62, 0.3);
+}
+
+/* Responsive typography */
+.responsive-heading {
+  @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl;
+}
+
+.responsive-subheading {
+  @apply text-lg sm:text-xl md:text-2xl;
+}
+
+.responsive-body {
+  @apply text-sm sm:text-base md:text-lg;
+}
+
+/* Loading skeleton */
+.skeleton {
+  @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+}
+
+/* Smooth transitions */
+.smooth-transition {
+  @apply transition-all duration-300 ease-out;
+}
+
+/* Focus styles for accessibility */
+.focus-style {
+  @apply focus:outline-none focus:ring-2 focus:ring-moonscape-accent focus:ring-offset-2;
 }

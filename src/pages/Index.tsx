@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -12,69 +12,55 @@ import LunarNavigation from '@/components/LunarNavigation';
 import MoonlightCursor from '@/components/MoonlightCursor';
 
 const Index = () => {
-  const particlesTimerRef = useRef<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const scrollTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    console.log('Index page mounted');
+    // Check if mobile and set loaded state
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
     
-    // Simplified particle system
-    const createParticles = () => {
-      const containers = document.querySelectorAll('.particles-container');
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // Set loaded state after initial render
+    setTimeout(() => setIsLoaded(true), 100);
+
+    // Optimized scroll handler
+    const handleScroll = () => {
+      if (scrollTimeoutRef.current) {
+        cancelAnimationFrame(scrollTimeoutRef.current);
+      }
       
-      containers.forEach(container => {
-        container.innerHTML = '';
-        
-        const particleCount = window.innerWidth < 768 ? 8 : 15;
-        
-        for (let i = 0; i < particleCount; i++) {
-          const particle = document.createElement('div');
-          particle.classList.add('particle', 'stellar-dust');
+      scrollTimeoutRef.current = requestAnimationFrame(() => {
+        // Simple scroll-based reveals
+        const revealElements = document.querySelectorAll('.reveal-on-scroll');
+        revealElements.forEach((element) => {
+          const rect = element.getBoundingClientRect();
+          const isVisible = rect.top < window.innerHeight * 0.8;
           
-          particle.style.left = `${Math.random() * 100}%`;
-          particle.style.top = `${Math.random() * 100}%`;
-          particle.style.width = `${Math.random() * 3 + 1}px`;
-          particle.style.height = `${Math.random() * 3 + 1}px`;
-          particle.style.animationDuration = `${Math.random() * 10 + 8}s`;
-          particle.style.animationDelay = `${Math.random() * 5}s`;
-          
-          container.appendChild(particle);
+          if (isVisible) {
+            element.classList.add('revealed');
+          }
+        });
+
+        // Lightweight parallax only on desktop
+        if (!isMobile) {
+          const parallaxElements = document.querySelectorAll('.parallax-bg');
+          parallaxElements.forEach((element) => {
+            const rect = element.getBoundingClientRect();
+            const speed = 0.2;
+            const yPos = window.scrollY * speed;
+            (element as HTMLElement).style.transform = `translateY(${yPos}px)`;
+          });
         }
       });
     };
 
-    // Simplified scroll handler
-    const handleScroll = () => {
-      if (particlesTimerRef.current) {
-        cancelAnimationFrame(particlesTimerRef.current);
-      }
-      
-      particlesTimerRef.current = requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const scrollPercent = scrollY / (document.body.scrollHeight - window.innerHeight);
-        
-        // Simple reveal elements
-        const revealElements = document.querySelectorAll('.reveal-on-scroll');
-        revealElements.forEach((element) => {
-          const elementTop = element.getBoundingClientRect().top;
-          
-          if (elementTop < window.innerHeight * 0.8) {
-            element.classList.add('revealed');
-          }
-        });
-        
-        // Parallax effects
-        const parallaxElements = document.querySelectorAll('.parallax-bg');
-        parallaxElements.forEach((bg) => {
-          const element = bg as HTMLElement;
-          const speed = 0.3;
-          const yPos = scrollY * speed;
-          element.style.transform = `translateY(${yPos}px)`;
-        });
-      });
-    };
-
     // Smooth scrolling for anchor links
-    const smoothScroll = (e: Event) => {
+    const handleAnchorClick = (e: Event) => {
       const target = e.target as HTMLAnchorElement;
       
       if (target.tagName === 'A' && target.hash) {
@@ -87,50 +73,43 @@ const Index = () => {
             block: 'start'
           });
           
+          // Update URL without triggering navigation
           history.pushState(null, '', target.hash);
         }
       }
     };
 
-    // Initialize
-    createParticles();
+    // Add event listeners
     window.addEventListener('scroll', handleScroll, { passive: true });
-    document.body.addEventListener('click', smoothScroll);
-    handleScroll(); // Initial call
-
-    // Resize handler
-    const handleResize = () => {
-      createParticles();
-      handleScroll();
-    };
-
-    window.addEventListener('resize', handleResize);
+    document.addEventListener('click', handleAnchorClick);
     
+    // Initial scroll check
+    handleScroll();
+
     return () => {
+      window.removeEventListener('resize', checkMobile);
       window.removeEventListener('scroll', handleScroll);
-      document.body.removeEventListener('click', smoothScroll);
-      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('click', handleAnchorClick);
       
-      if (particlesTimerRef.current) {
-        cancelAnimationFrame(particlesTimerRef.current);
+      if (scrollTimeoutRef.current) {
+        cancelAnimationFrame(scrollTimeoutRef.current);
       }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-moonscape-charcoal text-moonscape-charcoal dark:text-white overflow-x-hidden">
-      {/* Background effects */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
-        <div className="lunar-phases-bg"></div>
-        <div className="cosmic-dust-layer"></div>
-      </div>
+    <div className={`min-h-screen bg-white dark:bg-moonscape-charcoal text-moonscape-charcoal dark:text-white overflow-x-hidden transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
       
-      {/* Enhanced cursor and navigation */}
-      <MoonlightCursor />
-      <LunarNavigation />
+      {/* Enhanced cursor for desktop only */}
+      {!isMobile && <MoonlightCursor />}
       
-      {/* Main content */}
+      {/* Lunar navigation for desktop */}
+      {!isMobile && <LunarNavigation />}
+      
+      {/* Main navigation */}
       <Navbar />
+      
+      {/* Page sections */}
       <Hero />
       <About />
       <Expertise />
@@ -139,16 +118,13 @@ const Index = () => {
       <Contact />
       <Footer />
       
-      {/* Decorative elements */}
-      <div className="fixed top-1/4 right-5 w-24 h-24 hexagon border border-moonscape-blue/10 opacity-10 animate-orbital z-0"></div>
-      <div className="fixed bottom-1/3 left-5 w-16 h-16 hexagon border border-moonscape-accent/10 opacity-10 animate-orbital-reverse z-0"></div>
-      
-      {/* Blueprint grid overlay */}
-      <div className="fixed inset-0 pointer-events-none z-0 blueprint-grid opacity-5"></div>
-      
-      {/* Moonlight beams */}
-      <div className="fixed top-0 right-1/4 w-1 h-full bg-gradient-to-b from-moonscape-accent/5 to-transparent pointer-events-none z-0 moonlight-beam"></div>
-      <div className="fixed top-0 left-1/3 w-1 h-full bg-gradient-to-b from-moonscape-blue/5 to-transparent pointer-events-none z-0 moonlight-beam"></div>
+      {/* Subtle background effects for desktop */}
+      {!isMobile && (
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-moonscape-accent/3 to-transparent rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-moonscape-blue/3 to-transparent rounded-full blur-3xl"></div>
+        </div>
+      )}
     </div>
   );
 };

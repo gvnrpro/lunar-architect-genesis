@@ -1,60 +1,74 @@
 
-import { useEffect, useRef } from 'react';
-import ScrollReveal from './ScrollReveal';
+import { useEffect, useRef, useState } from 'react';
+import { Building2, Home, Bridge, Leaf } from 'lucide-react';
 
 const expertiseAreas = [
   {
     id: 1,
     title: 'Commercial Construction',
     description: 'Large-scale commercial projects including office complexes, shopping centers, and industrial facilities.',
-    icon: '🏢',
+    icon: Building2,
     projects: '45+',
+    color: 'text-blue-600 dark:text-blue-400',
+    bgColor: 'bg-blue-50 dark:bg-blue-900/20',
   },
   {
     id: 2,
     title: 'Residential Development',
     description: 'Premium residential projects from luxury villas to modern apartment complexes.',
-    icon: '🏠',
+    icon: Home,
     projects: '60+',
+    color: 'text-green-600 dark:text-green-400',
+    bgColor: 'bg-green-50 dark:bg-green-900/20',
   },
   {
     id: 3,
     title: 'Infrastructure Projects',
     description: 'Roads, bridges, and public infrastructure that connects communities.',
-    icon: '🌉',
+    icon: Bridge,
     projects: '25+',
+    color: 'text-orange-600 dark:text-orange-400',
+    bgColor: 'bg-orange-50 dark:bg-orange-900/20',
   },
   {
     id: 4,
     title: 'Green Building Solutions',
     description: 'Sustainable construction practices with eco-friendly materials and energy-efficient designs.',
-    icon: '🌱',
+    icon: Leaf,
     projects: '30+',
+    color: 'text-emerald-600 dark:text-emerald-400',
+    bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
   },
 ];
 
 const Expertise = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
-    console.log('Expertise component mounted');
-    
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
+            const cardId = parseInt(entry.target.getAttribute('data-card-id') || '0');
+            setVisibleCards(prev => new Set([...prev, cardId]));
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: '50px' }
     );
-    
-    const revealElements = sectionRef.current?.querySelectorAll('.reveal-on-scroll');
-    revealElements?.forEach((el) => observer.observe(el));
-    
+
+    const cards = sectionRef.current?.querySelectorAll('[data-card-id]');
+    cards?.forEach((card) => observer.observe(card));
+
     return () => {
-      revealElements?.forEach((el) => observer.unobserve(el));
+      cards?.forEach((card) => observer.unobserve(card));
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
@@ -62,65 +76,79 @@ const Expertise = () => {
     <section
       id="expertise"
       ref={sectionRef}
-      className="section-padding relative overflow-hidden"
+      className="section-padding bg-gray-50 dark:bg-moonscape-navy/20"
     >
-      <div className="container px-6 md:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl mb-6 font-monument">Our Expertise</h2>
-            <div className="h-0.5 w-16 bg-moonscape-accent mx-auto mb-8"></div>
-            <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-              With over 15 years of experience, we specialize in diverse construction projects 
-              that showcase our commitment to quality, innovation, and sustainable development.
-            </p>
-          </ScrollReveal>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+          <h2 className="responsive-heading font-monument text-moonscape-navy dark:text-white mb-6">
+            Our Expertise
+          </h2>
+          <div className="h-1 w-16 bg-moonscape-accent mx-auto mb-6"></div>
+          <p className="responsive-body text-gray-600 dark:text-gray-300 leading-relaxed">
+            With over 15 years of experience, we specialize in diverse construction projects 
+            that showcase our commitment to quality, innovation, and sustainable development.
+          </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {expertiseAreas.map((area, index) => (
-            <ScrollReveal key={area.id} delay={index * 100} direction="up">
-              <div className="bg-white dark:bg-moonscape-navy/40 p-6 shadow-lg hover:shadow-xl transition-all duration-300 group rounded-sm h-full">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {area.icon}
+        {/* Expertise Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
+          {expertiseAreas.map((area, index) => {
+            const IconComponent = area.icon;
+            const isVisible = visibleCards.has(area.id);
+            const delay = isMobile ? 0 : index * 100;
+            
+            return (
+              <div 
+                key={area.id}
+                data-card-id={area.id}
+                className={`modern-card group h-full transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${delay}ms` }}
+              >
+                {/* Icon Container */}
+                <div className={`w-12 h-12 ${area.bgColor} ${area.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <IconComponent size={24} />
                 </div>
-                <h3 className="text-xl font-medium mb-3 group-hover:text-moonscape-accent transition-colors">
+                
+                {/* Content */}
+                <h3 className="text-lg font-semibold text-moonscape-navy dark:text-white mb-3 group-hover:text-moonscape-accent transition-colors">
                   {area.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">
+                
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 flex-grow">
                   {area.description}
                 </p>
-                <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <span className="text-moonscape-accent font-medium text-sm">
+                
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <span className="text-moonscape-accent font-semibold text-sm">
                     {area.projects} Projects
                   </span>
-                  <div className="w-6 h-6 hexagon bg-moonscape-accent/10 flex items-center justify-center">
-                    <span className="text-moonscape-accent text-xs">→</span>
+                  <div className="w-8 h-8 rounded-full bg-moonscape-accent/10 flex items-center justify-center group-hover:bg-moonscape-accent group-hover:text-white transition-colors">
+                    <span className="text-xs">→</span>
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
-          ))}
+            );
+          })}
         </div>
         
-        <ScrollReveal delay={400}>
-          <div className="mt-16 text-center">
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              Ready to discuss your next project?
-            </p>
-            <a 
-              href="#contact" 
-              className="inline-flex items-center gap-2 bg-moonscape-navy text-white px-8 py-3 rounded-sm hover:bg-moonscape-blue transition-all duration-300 hover:scale-105"
-            >
-              Start Your Project
-              <span className="w-1.5 h-1.5 rounded-full bg-moonscape-accent inline-block"></span>
-            </a>
-          </div>
-        </ScrollReveal>
+        {/* Call to Action */}
+        <div className="text-center">
+          <p className="responsive-body text-gray-600 dark:text-gray-300 mb-6">
+            Ready to discuss your next project?
+          </p>
+          <a 
+            href="#contact" 
+            className="modern-button"
+          >
+            Start Your Project
+          </a>
+        </div>
       </div>
-      
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-24 h-24 hexagon border border-moonscape-blue/10 opacity-20 animate-float"></div>
-      <div className="absolute bottom-20 right-10 w-32 h-32 hexagon border border-moonscape-accent/10 opacity-30 animate-float" style={{ animationDelay: '1s' }}></div>
     </section>
   );
 };
