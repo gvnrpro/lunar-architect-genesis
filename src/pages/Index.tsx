@@ -9,6 +9,7 @@ import Clients from '@/components/Clients';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import LoadingScreen from '@/components/LoadingScreen';
+import FloatingContactWidget from '@/components/FloatingContactWidget';
 
 // Lazy load desktop-only components
 const LunarNavigation = lazy(() => import('@/components/LunarNavigation'));
@@ -161,6 +162,9 @@ const Index = () => {
       </main>
       
       <Footer />
+      
+      {/* Floating Contact Widget */}
+      <FloatingContactWidget />
       
       {/* Optimized background effects for desktop */}
       {!isMobile && (

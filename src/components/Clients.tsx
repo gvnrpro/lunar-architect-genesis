@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from 'react';
+import TestimonialCarousel from './TestimonialCarousel';
 
 const clients = [
   { id: 1, name: 'TechCorp', logo: 'TC' },
@@ -52,7 +53,7 @@ const Clients = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {clients.map((client, index) => (
             <div 
               key={client.id}
@@ -68,8 +69,19 @@ const Clients = () => {
             </div>
           ))}
         </div>
+
+        {/* Testimonials Section */}
+        <div className="mb-16 reveal-on-scroll">
+          <div className="text-center mb-12">
+            <h3 className="text-2xl md:text-3xl font-monument mb-4">What Our Clients Say</h3>
+            <p className="text-gray-600 dark:text-gray-300">
+              Real experiences from our valued partners and clients.
+            </p>
+          </div>
+          <TestimonialCarousel />
+        </div>
         
-        <div className="mt-16 text-center reveal-on-scroll">
+        <div className="text-center reveal-on-scroll">
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
             Ready to collaborate on your next project?
           </p>

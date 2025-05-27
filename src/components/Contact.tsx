@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from 'react';
+import ProjectCalculator from './ProjectCalculator';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -33,17 +34,19 @@ const Contact = () => {
       className="section-padding relative overflow-hidden bg-gray-50 dark:bg-moonscape-navy/20"
     >
       <div className="container px-6 md:px-10">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl mb-6 reveal-on-scroll">Contact Us</h2>
-              <div className="h-0.5 w-16 bg-moonscape-accent mb-8 reveal-on-scroll"></div>
-              
-              <p className="text-gray-600 dark:text-gray-300 mb-8 reveal-on-scroll">
-                Ready to transform your vision into reality? Our team is ready to discuss your project needs 
-                and provide innovative solutions tailored to your requirements.
-              </p>
-              
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl mb-6 reveal-on-scroll">Contact Us</h2>
+            <div className="h-0.5 w-16 bg-moonscape-accent mx-auto mb-8 reveal-on-scroll"></div>
+            <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed reveal-on-scroll max-w-2xl mx-auto">
+              Ready to transform your vision into reality? Our team is ready to discuss your project needs 
+              and provide innovative solutions tailored to your requirements.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-12 mb-16">
+            {/* Contact Information */}
+            <div className="lg:col-span-1">
               <div className="space-y-6 reveal-on-scroll">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 hexagon bg-moonscape-navy/10 dark:bg-white/10 flex items-center justify-center flex-shrink-0 mt-1">
@@ -94,8 +97,9 @@ const Contact = () => {
               </div>
             </div>
             
-            <div className="reveal-on-scroll">
-              <form className="bg-white dark:bg-moonscape-navy/40 p-8 shadow-lg">
+            {/* Contact Form */}
+            <div className="lg:col-span-1 reveal-on-scroll">
+              <form className="bg-white dark:bg-moonscape-navy/40 p-8 shadow-lg rounded-xl">
                 <h3 className="text-2xl mb-6">Send us a message</h3>
                 
                 <div className="space-y-4">
@@ -105,7 +109,7 @@ const Contact = () => {
                       <input
                         type="text"
                         id="name"
-                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-none px-3 py-2 focus:outline-none focus:ring-1 focus:ring-moonscape-accent"
+                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
                       />
                     </div>
                     <div>
@@ -113,7 +117,7 @@ const Contact = () => {
                       <input
                         type="email"
                         id="email"
-                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-none px-3 py-2 focus:outline-none focus:ring-1 focus:ring-moonscape-accent"
+                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
                       />
                     </div>
                   </div>
@@ -123,7 +127,7 @@ const Contact = () => {
                     <input
                       type="text"
                       id="subject"
-                      className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-none px-3 py-2 focus:outline-none focus:ring-1 focus:ring-moonscape-accent"
+                      className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
                     />
                   </div>
                   
@@ -132,14 +136,14 @@ const Contact = () => {
                     <textarea
                       id="message"
                       rows={5}
-                      className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-none px-3 py-2 focus:outline-none focus:ring-1 focus:ring-moonscape-accent"
+                      className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
                     ></textarea>
                   </div>
                   
                   <div>
                     <button
                       type="submit"
-                      className="w-full bg-moonscape-navy text-white py-3 px-4 hover:bg-moonscape-blue transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-moonscape-navy text-white py-3 px-4 hover:bg-moonscape-blue transition-colors flex items-center justify-center gap-2 rounded-lg"
                     >
                       Send Message
                       <span className="w-1.5 h-1.5 rounded-full bg-moonscape-accent inline-block"></span>
@@ -147,6 +151,11 @@ const Contact = () => {
                   </div>
                 </div>
               </form>
+            </div>
+
+            {/* Project Calculator */}
+            <div className="lg:col-span-1 reveal-on-scroll">
+              <ProjectCalculator />
             </div>
           </div>
         </div>
