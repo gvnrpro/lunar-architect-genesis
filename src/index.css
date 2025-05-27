@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -160,7 +159,7 @@
 
   /* Enhanced button styles */
   .modern-button {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-moonscape-navy text-white rounded-lg hover:bg-moonscape-blue transition-all duration-300 font-medium text-sm touch-button will-change-transform;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-moonscape-navy text-white rounded-lg hover:bg-moonscape-blue transition-all duration-300 font-medium text-sm touch-button will-change-transform focus:outline-none focus:ring-2 focus:ring-moonscape-accent focus:ring-offset-2;
   }
 
   .modern-button:hover {
@@ -191,6 +190,14 @@
   .reveal-on-scroll.revealed {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* Grid pattern background */
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(to right, hsl(var(--muted)) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--muted)) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 
   /* Enhanced reduced motion support */
