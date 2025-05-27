@@ -1,6 +1,7 @@
 
 import { useEffect, useRef } from 'react';
 import ProjectCalculator from './ProjectCalculator';
+import LottiePlayer from './LottiePlayer';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,13 +36,23 @@ const Contact = () => {
     >
       <div className="container px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl mb-6 reveal-on-scroll">Contact Us</h2>
-            <div className="h-0.5 w-16 bg-moonscape-accent mx-auto mb-8 reveal-on-scroll"></div>
-            <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed reveal-on-scroll max-w-2xl mx-auto">
-              Ready to transform your vision into reality? Our team is ready to discuss your project needs 
-              and provide innovative solutions tailored to your requirements.
-            </p>
+          {/* Header with Animation */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl md:text-4xl mb-6 reveal-on-scroll">Let's Build Together</h2>
+              <div className="h-0.5 w-16 bg-moonscape-accent mx-auto lg:mx-0 mb-8 reveal-on-scroll"></div>
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed reveal-on-scroll">
+                Ready to start your next project? Get in touch with us today. Our team is ready to discuss your project needs and provide innovative solutions tailored to your requirements.
+              </p>
+            </div>
+            
+            <div className="flex justify-center reveal-on-scroll">
+              <LottiePlayer
+                src="https://assets10.lottiefiles.com/packages/lf20_a3zkkhqn.json"
+                className="w-full max-w-sm"
+                style={{ height: '280px' }}
+              />
+            </div>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-12 mb-16">
@@ -103,30 +114,20 @@ const Contact = () => {
                 <h3 className="text-2xl mb-6">Send us a message</h3>
                 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
-                      <input
-                        type="text"
-                        id="name"
-                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                      <input
-                        type="email"
-                        id="email"
-                        className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
-                      />
-                    </div>
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
+                    />
                   </div>
                   
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
                     <input
-                      type="text"
-                      id="subject"
+                      type="email"
+                      id="email"
                       className="w-full border border-gray-300 dark:border-gray-700 dark:bg-moonscape-navy/70 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-moonscape-accent"
                     />
                   </div>

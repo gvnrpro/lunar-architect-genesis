@@ -2,6 +2,7 @@
 import { useEffect, useRef } from 'react';
 import ScrollReveal from './ScrollReveal';
 import ProjectGallery from './ProjectGallery';
+import LottiePlayer from './LottiePlayer';
 
 const Projects = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -35,22 +36,34 @@ const Projects = () => {
       className="section-padding relative overflow-hidden bg-gray-50 dark:bg-moonscape-navy/20"
     >
       <div className="container px-6 md:px-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl mb-6 font-monument">Featured Projects</h2>
-            <div className="h-0.5 w-16 bg-moonscape-accent mx-auto mb-8"></div>
-            <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-              Explore our portfolio of remarkable projects that demonstrate our expertise 
-              in creating innovative and sustainable architectural solutions.
-            </p>
+        {/* Header with Animation */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+          <div className="text-center lg:text-left">
+            <ScrollReveal>
+              <h2 className="text-3xl md:text-4xl mb-6 font-monument">Featured Projects</h2>
+              <div className="h-0.5 w-16 bg-moonscape-accent mx-auto lg:mx-0 mb-8"></div>
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+                A showcase of our commitment to excellence and innovation. Explore our portfolio of remarkable projects that demonstrate our expertise in creating innovative and sustainable architectural solutions.
+              </p>
+            </ScrollReveal>
+          </div>
+          
+          <ScrollReveal delay={200}>
+            <div className="flex justify-center">
+              <LottiePlayer
+                src="https://assets1.lottiefiles.com/private_files/lf30_hvlzlduk.json"
+                className="w-full max-w-md"
+                style={{ height: '350px' }}
+              />
+            </div>
           </ScrollReveal>
         </div>
         
-        <ScrollReveal delay={200}>
+        <ScrollReveal delay={400}>
           <ProjectGallery />
         </ScrollReveal>
         
-        <ScrollReveal delay={400}>
+        <ScrollReveal delay={600}>
           <div className="mt-16 text-center">
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
               Want to see more of our work?
