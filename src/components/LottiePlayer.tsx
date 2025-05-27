@@ -1,6 +1,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+// Declare the custom element type for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lottie-player': any;
+    }
+  }
+}
+
 interface LottiePlayerProps {
   src: string;
   className?: string;
