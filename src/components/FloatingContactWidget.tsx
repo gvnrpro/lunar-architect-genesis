@@ -24,12 +24,9 @@ const FloatingContactWidget = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     console.log('Contact form submitted:', formData);
-    // Reset form
     setFormData({ name: '', email: '', message: '' });
     setIsOpen(false);
-    // You could integrate with an API here
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,6 +35,24 @@ const FloatingContactWidget = () => {
       [e.target.name]: e.target.value
     }));
   };
+
+  const contacts = [
+    {
+      name: "Dr. Afnan Abdul",
+      phone: "+918075447170",
+      whatsapp: "918075447170"
+    },
+    {
+      name: "Rabeeh Maprom", 
+      phone: "+919633941567",
+      whatsapp: "919633941567"
+    },
+    {
+      name: "Dr. PT Abdul Rahman",
+      phone: "+919895100002", 
+      whatsapp: "919895100002"
+    }
+  ];
 
   if (!isVisible) return null;
 
@@ -124,21 +139,41 @@ const FloatingContactWidget = () => {
 
             {/* Quick Actions */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex gap-2">
-                <a
-                  href="tel:+914841234567"
-                  className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors text-sm"
-                >
-                  <Phone size={14} />
-                  Call
-                </a>
-                <a
-                  href="mailto:info@moonscapeholdings.com"
-                  className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors text-sm"
-                >
-                  <Mail size={14} />
-                  Email
-                </a>
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <a
+                    href="mailto:moonscapeholdings@gmail.com"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors text-sm"
+                  >
+                    <Mail size={14} />
+                    Email
+                  </a>
+                </div>
+                
+                {/* Contact persons with WhatsApp */}
+                <div className="space-y-2">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Contact Our Team:</p>
+                  {contacts.map((contact, index) => (
+                    <div key={index} className="flex gap-1">
+                      <a
+                        href={`tel:${contact.phone}`}
+                        className="flex-1 flex items-center justify-center gap-1 py-1 px-2 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded text-xs hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
+                      >
+                        <Phone size={10} />
+                        {contact.name.split(' ')[0]}
+                      </a>
+                      <a
+                        href={`https://wa.me/${contact.whatsapp}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1 py-1 px-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded text-xs hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                      >
+                        <MessageCircle size={10} />
+                        WA
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

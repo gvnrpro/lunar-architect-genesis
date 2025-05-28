@@ -19,14 +19,13 @@ const Index = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
-  const scrollTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Enhanced mobile detection
+    // Enhanced mobile detection with touch capability check
     const checkMobile = () => {
       const width = window.innerWidth;
-      const isTouchDevice = 'ontouchstart' in window;
-      setIsMobile(width < 768 || isTouchDevice);
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      setIsMobile(width < 768 || (isTouchDevice && width < 1024));
     };
     
     checkMobile();
@@ -40,43 +39,7 @@ const Index = () => {
   useEffect(() => {
     if (!isLoaded) return;
 
-    // Optimized scroll handler with better performance
-    const handleScroll = () => {
-      if (scrollTimeoutRef.current) {
-        cancelAnimationFrame(scrollTimeoutRef.current);
-      }
-      
-      scrollTimeoutRef.current = requestAnimationFrame(() => {
-        // Intersection observer replacement for better performance
-        const revealElements = document.querySelectorAll('.reveal-on-scroll:not(.revealed)');
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        
-        revealElements.forEach((element) => {
-          const rect = element.getBoundingClientRect();
-          const elementTop = rect.top + scrollY;
-          
-          if (scrollY + windowHeight > elementTop + 50) {
-            element.classList.add('revealed');
-          }
-        });
-
-        // Lightweight parallax only on desktop with reduced intensity
-        if (!isMobile) {
-          const parallaxElements = document.querySelectorAll('.parallax-bg');
-          parallaxElements.forEach((element) => {
-            const rect = element.getBoundingClientRect();
-            if (rect.top < windowHeight && rect.bottom > 0) {
-              const speed = 0.1;
-              const yPos = scrollY * speed;
-              (element as HTMLElement).style.transform = `translate3d(0, ${yPos}px, 0)`;
-            }
-          });
-        }
-      });
-    };
-
-    // Smooth scrolling with proper focus management
+    // Smooth scrolling with proper focus management and performance optimization
     const handleAnchorClick = (e: Event) => {
       const target = e.target as HTMLAnchorElement;
       
@@ -94,10 +57,10 @@ const Index = () => {
             behavior: 'smooth'
           });
           
-          // Update URL and manage focus
+          // Update URL and manage focus for accessibility
           history.pushState(null, '', target.hash);
           
-          // Set focus for accessibility
+          // Set focus for accessibility after scroll completes
           setTimeout(() => {
             (targetElement as HTMLElement).focus({ preventScroll: true });
           }, 500);
@@ -105,19 +68,39 @@ const Index = () => {
       }
     };
 
-    // Enhanced event listeners with better performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Performance optimized parallax effect for desktop
+    let rafId: number;
+    const handleScroll = () => {
+      if (isMobile) return;
+      
+      rafId = requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const parallaxElements = document.querySelectorAll('.parallax-bg');
+        
+        parallaxElements.forEach((element) => {
+          const rect = element.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            const speed = 0.05; // Reduced for better performance
+            const yPos = scrollY * speed;
+            (element as HTMLElement).style.transform = `translate3d(0, ${yPos}px, 0)`;
+          }
+        });
+      });
+    };
+
     document.addEventListener('click', handleAnchorClick);
     
-    // Initial scroll check
-    handleScroll();
+    if (!isMobile) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('click', handleAnchorClick);
-      
-      if (scrollTimeoutRef.current) {
-        cancelAnimationFrame(scrollTimeoutRef.current);
+      if (!isMobile) {
+        window.removeEventListener('scroll', handleScroll);
+      }
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
     };
   }, [isMobile, isLoaded]);
@@ -166,11 +149,11 @@ const Index = () => {
       {/* Floating Contact Widget */}
       <FloatingContactWidget />
       
-      {/* Optimized background effects for desktop */}
+      {/* Optimized background effects for desktop only */}
       {!isMobile && (
         <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-moonscape-accent/2 to-transparent rounded-full blur-3xl will-change-transform"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-moonscape-blue/2 to-transparent rounded-full blur-3xl will-change-transform"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-moonscape-accent/2 to-transparent rounded-full blur-3xl will-change-transform parallax-bg"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-moonscape-blue/2 to-transparent rounded-full blur-3xl will-change-transform parallax-bg"></div>
         </div>
       )}
     </div>

@@ -1,11 +1,31 @@
 
+import { Phone, Mail, MessageCircle } from 'lucide-react';
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const contacts = [
+    {
+      name: "Dr. Afnan Abdul",
+      phone: "+918075447170",
+      whatsapp: "918075447170"
+    },
+    {
+      name: "Rabeeh Maprom", 
+      phone: "+919633941567",
+      whatsapp: "919633941567"
+    },
+    {
+      name: "Dr. PT Abdul Rahman",
+      phone: "+919895100002", 
+      whatsapp: "919895100002"
+    }
+  ];
 
   return (
     <footer className="bg-moonscape-charcoal text-white pt-16 pb-8">
       <div className="container px-6 md:px-10">
-        <div className="grid md:grid-cols-3 gap-10 mb-12">
+        <div className="grid md:grid-cols-4 gap-10 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 hexagon bg-white flex items-center justify-center">
@@ -60,23 +80,51 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-medium mb-6">Newsletter</h3>
-            <p className="text-gray-400 mb-4">
-              Subscribe to our newsletter to receive updates on our latest projects and industry insights.
-            </p>
-            <form className="flex">
-              <input
-                type="email"
-                placeholder="Your email address"
-                className="flex-1 bg-moonscape-navy/50 border border-gray-700 px-4 py-2 text-white focus:outline-none focus:ring-1 focus:ring-moonscape-accent"
-              />
-              <button
-                type="submit"
-                className="bg-moonscape-accent text-white px-4 py-2 hover:bg-blue-600 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
+            <h3 className="text-lg font-medium mb-6">Contact Info</h3>
+            <div className="space-y-4">
+              <div>
+                <p className="text-gray-400 text-sm mb-2">Office Location</p>
+                <p className="text-white text-sm">
+                  Ottapalam, Palakkad<br />
+                  Kerala, PIN 679501
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-400 text-sm mb-2">Email</p>
+                <a href="mailto:moonscapeholdings@gmail.com" className="text-moonscape-accent hover:text-white transition-colors text-sm">
+                  moonscapeholdings@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-medium mb-6">Reach Our Team</h3>
+            <div className="space-y-4">
+              {contacts.map((contact, index) => (
+                <div key={index} className="space-y-2">
+                  <p className="text-white text-sm font-medium">{contact.name}</p>
+                  <div className="flex gap-2">
+                    <a 
+                      href={`tel:${contact.phone}`} 
+                      className="inline-flex items-center gap-1 bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs hover:bg-green-600/30 transition-colors"
+                    >
+                      <Phone size={10} />
+                      Call
+                    </a>
+                    <a 
+                      href={`https://wa.me/${contact.whatsapp}`} 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 bg-blue-600/20 text-blue-400 px-2 py-1 rounded text-xs hover:bg-blue-600/30 transition-colors"
+                    >
+                      <MessageCircle size={10} />
+                      WhatsApp
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         

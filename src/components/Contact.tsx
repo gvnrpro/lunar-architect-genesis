@@ -1,8 +1,9 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageCircle } from 'lucide-react';
 import ProjectCalculator from './ProjectCalculator';
 import LottiePlayer from './LottiePlayer';
+import { useOptimizedScroll } from '@/hooks/useOptimizedScroll';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -14,25 +15,7 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const revealElements = sectionRef.current?.querySelectorAll('.reveal-on-scroll');
-    revealElements?.forEach((el) => observer.observe(el));
-    
-    return () => {
-      revealElements?.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
+  useOptimizedScroll(sectionRef);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -53,6 +36,24 @@ const Contact = () => {
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
+  const contacts = [
+    {
+      name: "Dr. Afnan Abdul",
+      phone: "+918075447170",
+      whatsapp: "918075447170"
+    },
+    {
+      name: "Rabeeh Maprom", 
+      phone: "+919633941567",
+      whatsapp: "919633941567"
+    },
+    {
+      name: "Dr. PT Abdul Rahman",
+      phone: "+919895100002", 
+      whatsapp: "919895100002"
+    }
+  ];
+
   return (
     <section
       id="contact"
@@ -66,7 +67,7 @@ const Contact = () => {
           {/* Header with Animation */}
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
             <div className="text-center lg:text-left">
-              <h2 id="contact-heading" className="text-3xl md:text-4xl mb-6 reveal-on-scroll">Let's Build Together</h2>
+              <h2 id="contact-heading" className="text-3xl md:text-4xl mb-6 reveal-on-scroll font-monument">Let's Build Together</h2>
               <div className="h-0.5 w-16 bg-moonscape-accent mx-auto lg:mx-0 mb-8 reveal-on-scroll"></div>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed reveal-on-scroll">
                 Ready to transform your vision into reality? Contact us today to discuss your project. Our experienced team is here to provide innovative solutions tailored to your specific needs and requirements.
@@ -94,8 +95,8 @@ const Contact = () => {
                     <h3 className="text-lg font-semibold mb-2">Visit Our Office</h3>
                     <p className="text-gray-600 dark:text-gray-400">
                       Moonscape Holdings<br />
-                      123 Business District<br />
-                      Kochi, Kerala 682030<br />
+                      Ottapalam, Palakkad<br />
+                      Kerala, PIN 679501<br />
                       India
                     </p>
                   </div>
@@ -108,31 +109,47 @@ const Contact = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Email Us</h3>
                     <p className="text-gray-600 dark:text-gray-400">
+                      <a href="mailto:moonscapeholdings@gmail.com" className="hover:text-moonscape-accent transition-colors">
+                        moonscapeholdings@gmail.com
+                      </a><br />
                       <a href="mailto:info@moonscapeholdings.com" className="hover:text-moonscape-accent transition-colors">
                         info@moonscapeholdings.com
-                      </a><br />
-                      <a href="mailto:projects@moonscapeholdings.com" className="hover:text-moonscape-accent transition-colors">
-                        projects@moonscapeholdings.com
                       </a>
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 hexagon bg-moonscape-navy/10 dark:bg-white/10 flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-moonscape-accent" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold mb-2">Call Us</h3>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      <a href="tel:+914841234567" className="hover:text-moonscape-accent transition-colors">
-                        +91 484 123 4567
-                      </a><br />
-                      <a href="tel:+919876543210" className="hover:text-moonscape-accent transition-colors">
-                        +91 9876 543 210
-                      </a>
-                    </p>
-                  </div>
+                {/* Contact Persons */}
+                <div className="space-y-6">
+                  {contacts.map((contact, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className="w-12 h-12 hexagon bg-moonscape-navy/10 dark:bg-white/10 flex items-center justify-center flex-shrink-0">
+                        <Phone className="w-5 h-5 text-moonscape-accent" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold mb-2">{contact.name}</h3>
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <a 
+                            href={`tel:${contact.phone}`} 
+                            className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-3 py-1 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors text-sm"
+                          >
+                            <Phone size={14} />
+                            Call
+                          </a>
+                          <a 
+                            href={`https://wa.me/${contact.whatsapp}`} 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors text-sm"
+                          >
+                            <MessageCircle size={14} />
+                            WhatsApp
+                          </a>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{contact.phone}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
