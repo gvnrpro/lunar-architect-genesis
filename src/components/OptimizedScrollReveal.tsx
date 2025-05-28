@@ -1,7 +1,7 @@
 
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
-interface ScrollRevealProps {
+interface OptimizedScrollRevealProps {
   children: React.ReactNode;
   delay?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
@@ -9,10 +9,10 @@ interface ScrollRevealProps {
   duration?: number;
   threshold?: number;
   once?: boolean;
-  classNames?: string;
+  className?: string;
 }
 
-const ScrollReveal = ({
+const OptimizedScrollReveal = ({
   children,
   delay = 0,
   direction = 'up',
@@ -20,8 +20,8 @@ const ScrollReveal = ({
   duration = 600,
   threshold = 0.1,
   once = true,
-  classNames = ''
-}: ScrollRevealProps) => {
+  className = ''
+}: OptimizedScrollRevealProps) => {
   const { elementRef, isVisible } = useIntersectionObserver({
     threshold,
     delay,
@@ -55,7 +55,7 @@ const ScrollReveal = ({
   return (
     <div 
       ref={elementRef} 
-      className={`scroll-reveal-element ${classNames}`}
+      className={className}
       style={styles}
     >
       {children}
@@ -63,4 +63,4 @@ const ScrollReveal = ({
   );
 };
 
-export default ScrollReveal;
+export default OptimizedScrollReveal;

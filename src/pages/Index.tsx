@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState, lazy, Suspense } from 'react';
+import { useDarkMode } from '@/hooks/useDarkMode';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -10,6 +11,7 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import LoadingScreen from '@/components/LoadingScreen';
 import FloatingContactWidget from '@/components/FloatingContactWidget';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 // Lazy load desktop-only components
 const LunarNavigation = lazy(() => import('@/components/LunarNavigation'));
@@ -19,6 +21,7 @@ const Index = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const { isDark, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
     // Enhanced mobile detection with touch capability check
@@ -115,48 +118,50 @@ const Index = () => {
   }
 
   return (
-    <div className={`min-h-screen bg-white dark:bg-moonscape-charcoal text-moonscape-charcoal dark:text-white overflow-x-hidden transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-      
-      {/* Enhanced cursor for desktop only */}
-      {!isMobile && (
-        <Suspense fallback={null}>
-          <OptimizedMoonlightCursor />
-        </Suspense>
-      )}
-      
-      {/* Lunar navigation for desktop */}
-      {!isMobile && (
-        <Suspense fallback={null}>
-          <LunarNavigation />
-        </Suspense>
-      )}
-      
-      {/* Main navigation */}
-      <Navbar />
-      
-      {/* Page sections with improved accessibility */}
-      <main role="main">
-        <Hero />
-        <About />
-        <Expertise />
-        <Projects />
-        <Clients />
-        <Contact />
-      </main>
-      
-      <Footer />
-      
-      {/* Floating Contact Widget */}
-      <FloatingContactWidget />
-      
-      {/* Optimized background effects for desktop only */}
-      {!isMobile && (
-        <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-moonscape-accent/2 to-transparent rounded-full blur-3xl will-change-transform parallax-bg"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-moonscape-blue/2 to-transparent rounded-full blur-3xl will-change-transform parallax-bg"></div>
-        </div>
-      )}
-    </div>
+    <ErrorBoundary>
+      <div className={`min-h-screen bg-white dark:bg-moonscape-charcoal text-moonscape-charcoal dark:text-white overflow-x-hidden transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        
+        {/* Enhanced cursor for desktop only */}
+        {!isMobile && (
+          <Suspense fallback={null}>
+            <OptimizedMoonlightCursor />
+          </Suspense>
+        )}
+        
+        {/* Lunar navigation for desktop */}
+        {!isMobile && (
+          <Suspense fallback={null}>
+            <LunarNavigation />
+          </Suspense>
+        )}
+        
+        {/* Main navigation */}
+        <Navbar />
+        
+        {/* Page sections with improved accessibility */}
+        <main role="main">
+          <Hero />
+          <About />
+          <Expertise />
+          <Projects />
+          <Clients />
+          <Contact />
+        </main>
+        
+        <Footer />
+        
+        {/* Floating Contact Widget */}
+        <FloatingContactWidget />
+        
+        {/* Optimized background effects for desktop only */}
+        {!isMobile && (
+          <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-l from-moonscape-accent/2 to-transparent rounded-full blur-3xl will-change-transform parallax-bg"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-r from-moonscape-blue/2 to-transparent rounded-full blur-3xl will-change-transform parallax-bg"></div>
+          </div>
+        )}
+      </div>
+    </ErrorBoundary>
   );
 };
 

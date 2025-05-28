@@ -1,5 +1,5 @@
 
-import ScrollReveal from './ScrollReveal';
+import OptimizedScrollReveal from './OptimizedScrollReveal';
 import ProjectGallery from './ProjectGallery';
 import { Building, Target, Award } from 'lucide-react';
 
@@ -15,16 +15,16 @@ const Projects = () => {
         {/* Header with Visual */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div className="text-center lg:text-left">
-            <ScrollReveal>
+            <OptimizedScrollReveal>
               <h2 id="projects-heading" className="text-3xl md:text-4xl mb-6 font-monument">Featured Projects</h2>
               <div className="h-0.5 w-16 bg-moonscape-accent mx-auto lg:mx-0 mb-8"></div>
               <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
                 Discover our portfolio of remarkable projects that showcase our commitment to excellence and innovation. From luxury residential complexes to cutting-edge commercial developments, each project demonstrates our expertise in creating sustainable architectural solutions.
               </p>
-            </ScrollReveal>
+            </OptimizedScrollReveal>
           </div>
           
-          <ScrollReveal delay={200}>
+          <OptimizedScrollReveal delay={200}>
             <div className="flex justify-center">
               <div className="relative w-full max-w-md h-80 flex items-center justify-center">
                 {/* Project Achievement Icons */}
@@ -55,14 +55,14 @@ const Projects = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-moonscape-blue/5 to-moonscape-accent/5 rounded-full blur-2xl"></div>
               </div>
             </div>
-          </ScrollReveal>
+          </OptimizedScrollReveal>
         </div>
         
-        <ScrollReveal delay={400}>
+        <OptimizedScrollReveal delay={400}>
           <ProjectGallery />
-        </ScrollReveal>
+        </OptimizedScrollReveal>
         
-        <ScrollReveal delay={600}>
+        <OptimizedScrollReveal delay={600}>
           <div className="mt-16 text-center">
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
               Ready to start your next project?
@@ -76,7 +76,7 @@ const Projects = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-moonscape-accent inline-block"></span>
             </a>
           </div>
-        </ScrollReveal>
+        </OptimizedScrollReveal>
       </div>
       
       {/* Decorative elements */}
