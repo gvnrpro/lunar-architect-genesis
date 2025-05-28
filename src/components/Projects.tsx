@@ -1,7 +1,7 @@
 
 import ScrollReveal from './ScrollReveal';
 import ProjectGallery from './ProjectGallery';
-import LottiePlayer from './LottiePlayer';
+import { Building, Target, Award } from 'lucide-react';
 
 const Projects = () => {
   return (
@@ -12,7 +12,7 @@ const Projects = () => {
       aria-labelledby="projects-heading"
     >
       <div className="container px-6 md:px-10">
-        {/* Header with Animation */}
+        {/* Header with Visual */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div className="text-center lg:text-left">
             <ScrollReveal>
@@ -26,11 +26,34 @@ const Projects = () => {
           
           <ScrollReveal delay={200}>
             <div className="flex justify-center">
-              <LottiePlayer
-                src="https://assets1.lottiefiles.com/private_files/lf30_hvlzlduk.json"
-                className="w-full max-w-md"
-                style={{ height: '350px' }}
-              />
+              <div className="relative w-full max-w-md h-80 flex items-center justify-center">
+                {/* Project Achievement Icons */}
+                <div className="grid grid-cols-3 gap-8 items-center">
+                  <div className="text-center">
+                    <div className="bg-moonscape-navy dark:bg-moonscape-accent/20 rounded-full p-6 mb-4 mx-auto w-20 h-20 flex items-center justify-center shadow-lg">
+                      <Building size={32} className="text-moonscape-accent" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300">50+ Projects</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="bg-moonscape-blue dark:bg-moonscape-blue/20 rounded-full p-6 mb-4 mx-auto w-24 h-24 flex items-center justify-center shadow-xl transform scale-110">
+                      <Target size={40} className="text-white dark:text-moonscape-accent" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300">100% Quality</p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="bg-moonscape-accent dark:bg-moonscape-accent/20 rounded-full p-6 mb-4 mx-auto w-20 h-20 flex items-center justify-center shadow-lg">
+                      <Award size={32} className="text-white dark:text-moonscape-accent" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Award Winning</p>
+                  </div>
+                </div>
+                
+                {/* Background Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-moonscape-blue/5 to-moonscape-accent/5 rounded-full blur-2xl"></div>
+              </div>
             </div>
           </ScrollReveal>
         </div>

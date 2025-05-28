@@ -1,8 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Building2, Compass, Hammer } from 'lucide-react';
 import LogoAnimation from './LogoAnimation';
-import LottiePlayer from './LottiePlayer';
 
 const Hero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -84,13 +83,27 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Animation Column */}
+          {/* Visual Content - Replacing Lottie with Icons */}
           <div className={`transition-all duration-1000 delay-1300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-            <LottiePlayer
-              src="https://assets3.lottiefiles.com/packages/lf20_tapubt7q.json"
-              className="w-full max-w-lg mx-auto"
-              style={{ height: '400px' }}
-            />
+            <div className="relative w-full max-w-lg mx-auto h-96 flex items-center justify-center">
+              {/* Central Icon */}
+              <div className="relative z-10 bg-moonscape-navy dark:bg-moonscape-accent/20 rounded-full p-8 shadow-2xl">
+                <Building2 size={80} className="text-moonscape-accent dark:text-moonscape-accent" />
+              </div>
+              
+              {/* Orbiting Icons */}
+              <div className="absolute inset-0 animate-spin" style={{ animationDuration: '20s' }}>
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2 bg-white dark:bg-moonscape-navy rounded-full p-4 shadow-lg">
+                  <Compass size={24} className="text-moonscape-blue" />
+                </div>
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 bg-white dark:bg-moonscape-navy rounded-full p-4 shadow-lg">
+                  <Hammer size={24} className="text-moonscape-blue" />
+                </div>
+              </div>
+              
+              {/* Background Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-r from-moonscape-blue/10 to-moonscape-accent/10 rounded-full blur-3xl"></div>
+            </div>
           </div>
         </div>
         
